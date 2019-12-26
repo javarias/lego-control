@@ -1,0 +1,8 @@
+*.o
+build
+test
+.cproject
+.project
+*.swp
+*.so
+*.a
