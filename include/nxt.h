@@ -8,7 +8,7 @@
 #ifndef NXT_H_
 #define NXT_H_
 
-#include <cstdint>
+#include <stdint.h>
 #include <string>
 
 /*
@@ -28,7 +28,7 @@ struct header {
 
 class payload_printer {
 public:
-	virtual std::string payload() = 0;
+	virtual uint8_t* payload() = 0;
 	virtual ~payload_printer();
 };
 
@@ -78,8 +78,8 @@ struct SetOutputState: public header, payload_printer {
     const uint8_t 	run_state;
     const uint32_t 	tacho_limit; //0 run indefinitely
 
-    std::string payload();
-    SetOutputState(uint8_t cmd_type, //0x00 or 0x08
+    uint8_t* payload();
+    SetOutputState(uint8_t cmd_type, //0x00 or 0x80
     		uint8_t motor, //MOTORON, BRAKE or REGULATED
 			int8_t power_set_point, //PWR_FULL_FW, PWR_34_FW, PWR_HALF_FW, etc
 			uint8_t mode,
@@ -89,6 +89,15 @@ struct SetOutputState: public header, payload_printer {
 			uint8_t tacho_limit
 			);
     ~SetOutputState();
+};
+
+struct BeepCommand: public header, payload_printer {
+	const uint8_t	tone;
+	const uint16_t	frequency;
+	const uint16_t	duration;
+
+	uint8_t* payload();
+	BeepCommand();
 };
 
 
