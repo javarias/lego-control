@@ -93,7 +93,7 @@ struct SetOutputState: public header, payload_printer {
     const uint8_t 	run_state;
     const uint32_t 	tacho_limit; //0 run indefinitely
 
-    SetOutputState(uint8_t cmd_type, //0x00 or 0x80
+    SetOutputState(
             uint8_t motor, //MOTORON, BRAKE or REGULATED
             int8_t power_set_point, //PWR_FULL_FW, PWR_34_FW, PWR_HALF_FW, etc
             uint8_t mode,

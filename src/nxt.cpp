@@ -65,9 +65,9 @@ void payload_printer::write(bt::conn c)
 }
 
 
-SetOutputState::SetOutputState(uint8_t cmd_type, uint8_t motor, int8_t power_set_point, uint8_t mode,
+SetOutputState::SetOutputState(uint8_t motor, int8_t power_set_point, uint8_t mode,
 		uint8_t regulation, int8_t turn_ratio, uint8_t run_state, uint8_t tacho_limit):
-header(12, cmd_type, 0x04), payload_printer(14), motor(motor), power_set_point(power_set_point), mode(mode),
+header(12, 0x80, 0x04), payload_printer(14), motor(motor), power_set_point(power_set_point), mode(mode),
 regulation(regulation), turn_ratio(turn_ratio), run_state(run_state), tacho_limit(tacho_limit)
 {
 	buff[0] = len & 0xFF;

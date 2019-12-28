@@ -23,7 +23,6 @@ conn::conn(const std::string& mac_addr):
     status =  connect(socket_fd_, (struct sockaddr *)&addr_, sizeof(addr_));
     if (status != 0)
         throw status;
-    std::cout << "socket fd: " << socket_fd_ << std::endl;
 }
 
 conn::~conn()
@@ -39,7 +38,6 @@ void conn::write(uint8_t* payload, size_t size)
     status = ::write(socket_fd_, payload, size);
     if (status < 0)
         throw status;
-    std::cout << "Written " << status << " bytes" << std::endl;
 }
 
 void conn::read(uint8_t* payload, size_t size)
@@ -49,7 +47,6 @@ void conn::read(uint8_t* payload, size_t size)
     status = ::read(socket_fd_, payload, size);
     if (status < 0 )
         throw status;
-    std::cout << "Read " << status << " bytes" << std::endl;
     return;
 }
 

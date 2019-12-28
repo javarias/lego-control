@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
         int n;
         std::cout << "press enter to stop" << std::endl;
         std::cin >> n;
-        SetOutputState stop_cmd (0x80, MOTOR_C, PWR_STOP, MOTORON|BRAKE|REGULATED, REGULATION_MODE_IDLE, 0,  MOTOR_RUN_STATE_RUNNING, 0);
+        SetOutputState stop_cmd (MOTOR_C, PWR_STOP, MOTORON|BRAKE|REGULATED, REGULATION_MODE_IDLE, 0,  MOTOR_RUN_STATE_RUNNING, 0);
         nxt.write(stop_cmd.payload(), 14);
         sleep(1);
     }
