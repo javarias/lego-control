@@ -113,6 +113,13 @@ header(3, 0x00, 0x06), payload_printer(5), motor(motor)
 	buff[4] = motor;
 }
 
+std::shared_ptr<GetOutputState_ret_pack> GetOutputState::get_response(bt::conn c)
+{
+    this->write(c);
+    std::shared_ptr<GetOutputState_ret_pack> ret_val (new GetOutputState_ret_pack(c));
+    return ret_val;
+}
+
 GetOutputState_ret_pack::GetOutputState_ret_pack(bt::conn c):
 header(0, 0, 0), payload_printer(27, c)
 {

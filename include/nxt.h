@@ -11,6 +11,7 @@
 #include <stdint.h>
 #include <string>
 #include <cstddef>
+#include <memory>
 #include "bt-conn.h"
 
 /*
@@ -32,8 +33,7 @@ class payload_printer {
     public:
         uint8_t* payload();
         void payload(uint8_t* buff);
-        void write(bt::conn c);
-        void read(bt::conn c);
+        virtual void write(bt::conn c);
         std::string cmd_hex();
 
         payload_printer(std::size_t cmd_len);
@@ -43,6 +43,7 @@ class payload_printer {
     protected:
         std::size_t cmd_len; //header::len + 2
         uint8_t* buff;
+        void read(bt::conn c);
 
 };
 
@@ -104,12 +105,6 @@ struct SetOutputState: public header, payload_printer {
     ~SetOutputState();
 };
 
-struct GetOutputState: public header, payload_printer {
-    const uint8_t motor; //MOTOR_A, MOTOR_B or MOTOR_C
-
-    GetOutputState(uint8_t motor);
-};
-
 struct GetOutputState_ret_pack: public header, payload_printer {
     uint8_t status;
     uint8_t motor;
@@ -124,6 +119,13 @@ struct GetOutputState_ret_pack: public header, payload_printer {
     int32_t rotation_count;
     
     GetOutputState_ret_pack(bt::conn);
+};
+
+struct GetOutputState: public header, payload_printer {
+    const uint8_t motor; //MOTOR_A, MOTOR_B or MOTOR_C
+
+    GetOutputState(uint8_t motor);
+    std::shared_ptr<GetOutputState_ret_pack> get_response(bt::conn c);
 };
 
 struct BeepCommand: public header, payload_printer {

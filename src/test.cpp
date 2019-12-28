@@ -38,12 +38,10 @@ int main(int argc, char** argv) {
 //    }
     {
         GetOutputState cmd (MOTOR_C);
-        cmd.write(nxt);
         std::cout << "GetOutputState: " << cmd.cmd_hex() << std::endl;
-        sleep(1);
-        GetOutputState_ret_pack ret_msg(nxt);
-        std::cout << "Returning status " << ret_msg.cmd_hex() << std::endl;
-        std::cout << "RotationCount: " << ret_msg.rotation_count << std::endl;
+        std::shared_ptr<GetOutputState_ret_pack> r = cmd.get_response(nxt);
+        std::cout << "Returning status " << r->cmd_hex() << std::endl;
+        std::cout << "RotationCount: " << r->rotation_count << std::endl;
     }
     return 0;
 }

@@ -13,7 +13,7 @@ libnxt.so: nxt.o bt-conn.o
 	g++ -g -shared $? -o $@  -lbluetooth
 
 %.o: %.cpp
-	g++ -g -fPIC -I../include -c $?
+	g++ -std=c++11 -g -fPIC -I../include -c $?
 
 
 .PHONY: clean
