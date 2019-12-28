@@ -1,5 +1,16 @@
-test: test.o nxt.o bt-conn.o
-	g++ -g $? -o $@ -lbluetooth
+all: test move stop
+
+test: test.o libnxt.so
+	g++ -g $? -o $@ -L. -lbluetooth -lnxt
+
+move: move.o libnxt.so
+	g++ -g $? -o $@ -L. -lbluetooth -lnxt
+
+stop: stop.o libnxt.so
+	g++ -g $? -o $@ -L. -lbluetooth -lnxt 
+
+libnxt.so: nxt.o bt-conn.o
+	g++ -g -fPIC -shared $? -o $@  -lbluetooth
 
 %.o: %.cpp
 	g++ -g -I../include -c $?
@@ -7,4 +18,4 @@ test: test.o nxt.o bt-conn.o
 
 .PHONY: clean
 clean:
-	rm -rf test *.o
+	rm -rf test move stop *.o *.so

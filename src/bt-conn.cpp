@@ -42,6 +42,17 @@ void conn::write(uint8_t* payload, size_t size)
     std::cout << "Written " << status << " bytes" << std::endl;
 }
 
+void conn::read(uint8_t* payload, size_t size)
+{
+    int status;
+
+    status = ::read(socket_fd_, payload, size);
+    if (status < 0 )
+        throw status;
+    std::cout << "Read " << status << " bytes" << std::endl;
+    return;
+}
+
 //int main(int argc, char **argv)
 //{
 //    struct sockaddr_rc addr = { 0 };

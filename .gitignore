@@ -1,6 +1,8 @@
 *.o
 build
 test
+start
+stop
 .cproject
 .project
 *.swp

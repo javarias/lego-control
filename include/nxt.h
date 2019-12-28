@@ -20,9 +20,9 @@
 // see http://www.robotappstore.com/Knowledge-Base/-How-to-Control-Lego-NXT-Motors/81.html
 
 struct header {
-    const uint16_t len;
-    const uint8_t  cmd_type;
-    const uint8_t  cmd;
+    uint16_t len;
+    uint8_t  cmd_type;
+    uint8_t  cmd;
 
     header(uint16_t len, uint8_t cmd_type, uint8_t cmd);
     virtual ~header();
@@ -31,16 +31,19 @@ struct header {
 class payload_printer {
     public:
         uint8_t* payload();
+        void payload(uint8_t* buff);
         void write(bt::conn c);
+        void read(bt::conn c);
+        std::string cmd_hex();
 
         payload_printer(std::size_t cmd_len);
+        payload_printer(std::size_t cmd_len, bt::conn c);
         virtual ~payload_printer();
 
     protected:
-        std::size_t cmd_len;
+        std::size_t cmd_len; //header::len + 2
         uint8_t* buff;
 
-        std::string cmd_hex();
 };
 
 /*
@@ -99,6 +102,28 @@ struct SetOutputState: public header, payload_printer {
             uint8_t tacho_limit
             );
     ~SetOutputState();
+};
+
+struct GetOutputState: public header, payload_printer {
+    const uint8_t motor; //MOTOR_A, MOTOR_B or MOTOR_C
+
+    GetOutputState(uint8_t motor);
+};
+
+struct GetOutputState_ret_pack: public header, payload_printer {
+    uint8_t status;
+    uint8_t motor;
+    uint8_t power_set_point;
+    uint8_t mode;
+    uint8_t regulation;
+    uint8_t turn_ratio;
+    uint8_t run_state;
+    uint32_t tacho_limit;
+    int32_t tacho_count;
+    int32_t block_tacho_count;
+    int32_t rotation_count;
+    
+    GetOutputState_ret_pack(bt::conn);
 };
 
 struct BeepCommand: public header, payload_printer {

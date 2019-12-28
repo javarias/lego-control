@@ -16,6 +16,7 @@ namespace bt
             ~conn();
 
             void write(uint8_t* msg, size_t size);
+            void read(uint8_t* msg, size_t size);
 
         private:
             struct sockaddr_rc addr_;
