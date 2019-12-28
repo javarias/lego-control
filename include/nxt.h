@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 #include <string>
+#include "bt-conn.h"
 
 /*
  * LEGO NXT uses little endian
@@ -18,7 +19,7 @@
 // see http://www.robotappstore.com/Knowledge-Base/-How-to-Control-Lego-NXT-Motors/81.html
 
 struct header {
-	const uint16_t len;
+    const uint16_t len;
     const uint8_t  cmd_type;
     const uint8_t  cmd;
 
@@ -27,9 +28,18 @@ struct header {
 };
 
 class payload_printer {
-public:
-	virtual uint8_t* payload() = 0;
-	virtual ~payload_printer();
+    public:
+        uint8_t* payload();
+        void write(bt::conn c);
+
+        payload(size_t cmd_len);
+        virtual ~payload_printer();
+
+    protected:
+        size_t cmd_len;
+        uint8_t* buff;
+
+        std::string cmd_hex();
 };
 
 /*
@@ -78,26 +88,24 @@ struct SetOutputState: public header, payload_printer {
     const uint8_t 	run_state;
     const uint32_t 	tacho_limit; //0 run indefinitely
 
-    uint8_t* payload();
     SetOutputState(uint8_t cmd_type, //0x00 or 0x80
-    		uint8_t motor, //MOTORON, BRAKE or REGULATED
-			int8_t power_set_point, //PWR_FULL_FW, PWR_34_FW, PWR_HALF_FW, etc
-			uint8_t mode,
-    		uint8_t regulation,
-			int8_t turn_ratio,
-			uint8_t run_state,
-			uint8_t tacho_limit
-			);
+            uint8_t motor, //MOTORON, BRAKE or REGULATED
+            int8_t power_set_point, //PWR_FULL_FW, PWR_34_FW, PWR_HALF_FW, etc
+            uint8_t mode,
+            uint8_t regulation,
+            int8_t turn_ratio,
+            uint8_t run_state,
+            uint8_t tacho_limit
+            );
     ~SetOutputState();
 };
 
 struct BeepCommand: public header, payload_printer {
-	const uint8_t	tone;
-	const uint16_t	frequency;
-	const uint16_t	duration;
+    const uint8_t	tone;
+    const uint16_t	frequency;
+    const uint16_t	duration;
 
-	uint8_t* payload();
-	BeepCommand();
+    BeepCommand();
 };
 
 
