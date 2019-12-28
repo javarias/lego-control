@@ -18,7 +18,7 @@ header::~header()
 {
 }
 
-payload_printer::payload_printer(size_t cmd_len):
+payload_printer::payload_printer(std::size_t cmd_len):
 cmd_len(cmd_len), buff(new uint8_t[cmd_len])
 {
 }
@@ -28,25 +28,25 @@ payload_printer::~payload_printer()
     delete[] buff;
 }
 
-payload_printer::payload()
+uint8_t* payload_printer::payload()
 {
-    return buff
+    return buff;
 }
 
 std::string payload_printer::cmd_hex()
 {
     std::ostringstream buf;
     buf.fill('0');
-    buf << "0x|"
+    buf << "0x|";
     for(int i = 0; i < (cmd_len - 1); i++) {
 	    buf << std::hex << std::setw(2) << std::uppercase << (unsigned int) buff[i] << ":" << std::setw(2);
     }
 	buf << std::hex << std::setw(2) << std::uppercase << (unsigned int) buff[cmd_len - 1] << std::setw(2);
-    buf << "|"
+    buf << "|";
     return buf.str();
 }
 
-payload_printer::write()
+void payload_printer::write(bt::conn c)
 {
     c.write(buff, cmd_len);
 }

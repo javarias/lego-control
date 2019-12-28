@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 #include <string>
+#include <cstddef>
 #include "bt-conn.h"
 
 /*
@@ -32,11 +33,11 @@ class payload_printer {
         uint8_t* payload();
         void write(bt::conn c);
 
-        payload(size_t cmd_len);
+        payload_printer(std::size_t cmd_len);
         virtual ~payload_printer();
 
     protected:
-        size_t cmd_len;
+        std::size_t cmd_len;
         uint8_t* buff;
 
         std::string cmd_hex();
