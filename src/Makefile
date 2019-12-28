@@ -10,10 +10,10 @@ stop: stop.o libnxt.so
 	g++ -g $? -o $@ -L. -lbluetooth -lnxt 
 
 libnxt.so: nxt.o bt-conn.o
-	g++ -g -fPIC -shared $? -o $@  -lbluetooth
+	g++ -g -shared $? -o $@  -lbluetooth
 
 %.o: %.cpp
-	g++ -g -I../include -c $?
+	g++ -g -fPIC -I../include -c $?
 
 
 .PHONY: clean
