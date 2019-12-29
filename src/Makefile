@@ -12,7 +12,7 @@ stop: stop.o libnxt.so
 libnxt.so: nxt.o bt-conn.o antenna.o
 	g++ -shared $? -o $@  -lbluetooth
 
-%.o: %.cpp %.h
+%.o: %.cpp
 	g++ -std=c++11 -g -fPIC -I../include -c $?
 
 
