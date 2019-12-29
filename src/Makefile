@@ -1,18 +1,18 @@
 all: test move stop
 
 test: test.o libnxt.so
-	g++ -g $? -o $@ -L. -lbluetooth -lnxt
+	g++ $(filter %.o, $?) -o $@ -L. -lbluetooth -lnxt
 
 move: move.o libnxt.so
-	g++ -g $? -o $@ -L. -lbluetooth -lnxt
+	g++ $(filter %.o, $?) -o $@ -L. -lbluetooth -lnxt
 
 stop: stop.o libnxt.so
-	g++ -g $? -o $@ -L. -lbluetooth -lnxt 
+	g++ $(filter %.o, $?) -o $@ -L. -lbluetooth -lnxt
 
-libnxt.so: nxt.o bt-conn.o
-	g++ -g -shared $? -o $@  -lbluetooth
+libnxt.so: nxt.o bt-conn.o antenna.o
+	g++ -shared $? -o $@  -lbluetooth
 
-%.o: %.cpp
+%.o: %.cpp %.h
 	g++ -std=c++11 -g -fPIC -I../include -c $?
 
 

@@ -100,7 +100,7 @@ struct SetOutputState: public header, payload_printer {
             uint8_t regulation,
             int8_t turn_ratio,
             uint8_t run_state,
-            uint8_t tacho_limit
+            uint32_t tacho_limit
             );
     ~SetOutputState();
 };
